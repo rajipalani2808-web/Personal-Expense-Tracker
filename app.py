@@ -1,4 +1,4 @@
-
+import os
 from flask import Flask, render_template, request, redirect, url_for
 import sqlite3
 from pathlib import Path
@@ -71,6 +71,19 @@ def index():
         expenses=expenses,
         balance=income - expenses
     )
+setup_database()
+
+if __name__ == "__main__":
+    port=int(os.environ.get(PORT,5000))
+    app.run(host='0.0.0.0',port=port)
+
+
+
+
+
+
+
+
 
 setup_database()
 
