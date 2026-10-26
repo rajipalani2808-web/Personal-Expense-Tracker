@@ -1,0 +1,110 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Personal Expense Tracker</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <header class="topbar">
+        <div>
+            <h1>Expense Tracker</h1>
+            <p>Personal Expense Tracker with Smart Insights</p>
+        </div>
+    </header>
+
+    <main class="container">
+        <section class="summary">
+            <div class="card">
+                <p>Total Income</p>
+                <h2>₹{{ "%.2f"|format(income) }}</h2>
+            </div>
+            <div class="card">
+                <p>Total Expenses</p>
+                <h2>₹{{ "%.2f"|format(expenses) }}</h2>
+            </div>
+            <div class="card">
+                <p>Current Balance</p>
+                <h2>₹{{ "%.2f"|format(balance) }}</h2>
+            </div>
+        </section>
+
+        <section class="panel">
+            <h2>Add a Transaction</h2>
+            <form method="POST" class="expense-form">
+                <label>
+                    Description
+                    <input type="text" name="title" placeholder="e.g. Bus ticket" required>
+                </label>
+
+                <label>
+                    Amount (₹)
+                    <input type="number" name="amount" min="0.01" step="0.01" required>
+                </label>
+
+                <label>
+                    Type
+                    <select name="kind" required>
+                        <option value="Expense">Expense</option>
+                        <option value="Income">Income</option>
+                    </select>
+                </label>
+
+                <label>
+                    Category
+                    <select name="category" required>
+                        <option>Food</option>
+                        <option>Travel</option>
+                        <option>Education</option>
+                        <option>Shopping</option>
+                        <option>Bills</option>
+                        <option>Salary</option>
+                        <option>Other</option>
+                    </select>
+                </label>
+
+                <label>
+                    Date
+                    <input type="date" name="date" required>
+                </label>
+
+                <button type="submit">Save Transaction</button>
+            </form>
+        </section>
+
+        <section class="panel">
+            <h2>Transaction History</h2>
+            {% if transactions %}
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Description</th>
+                            <th>Category</th>
+                            <th>Type</th>
+                            <th>Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in transactions %}
+                        <tr>
+                            <td>{{ item["date"] }}</td>
+                            <td>{{ item["title"] }}</td>
+                            <td>{{ item["category"] }}</td>
+                            <td>{{ item["kind"] }}</td>
+                            <td>₹{{ "%.2f"|format(item["amount"]) }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <p class="empty">No transactions yet. Add your first transaction above.</p>
+            {% endif %}
+        </section>
+    </main>
+</body>
+</html>
